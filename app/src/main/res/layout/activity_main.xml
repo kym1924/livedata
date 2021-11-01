@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.kimym.translator.data.entity.Resource" />
+
+        <import type="com.kimym.translator.data.entity.Status" />
+
+        <variable
+            name="viewModel"
+            type="com.kimym.translator.presentation.main.MainViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            tools:context=".presentation.main.MainActivity">
+
+            <TextView
+                android:id="@+id/tv_src_lang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.openBottomSheet(true)}"
+                android:text="@{viewModel.srcLang.language}"
+                android:textSize="24sp"
+                app:drawableEndCompat="@drawable/ic_baseline_keyboard_arrow_down_24"
+                app:layout_constraintBottom_toBottomOf="@id/btn_language_change"
+                app:layout_constraintEnd_toStartOf="@id/btn_language_change"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_language_change" />
+
+            <ImageButton
+                android:id="@+id/btn_language_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:clickable="@{viewModel.translated.status == Status.LOADING ? false : true}"
+                android:onClick="@{() -> viewModel.setSwap()}"
+                android:padding="8dp"
+                android:src="@drawable/ic_baseline_compare_arrows_48"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tv_target_lang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.openBottomSheet(false)}"
+                android:text="@{viewModel.targetLang.language}"
+                android:textSize="24sp"
+                app:drawableEndCompat="@drawable/ic_baseline_keyboard_arrow_down_24"
+                app:layout_constraintBottom_toBottomOf="@id/btn_language_change"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_language_change"
+                app:layout_constraintTop_toTopOf="@id/btn_language_change" />
+
+            <View
+                android:id="@+id/view_top_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_language_change" />
+
+            <EditText
+                android:id="@+id/et_query"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:hint="@string/hint_query"
+                android:inputType="textMultiLine"
+                android:maxLength="5000"
+                android:minHeight="160dp"
+                android:padding="16dp"
+                android:text="@={viewModel.query}"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@id/btn_clear_query"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_top_divider"
+                tools:ignore="Autofill" />
+
+            <ImageButton
+                android:id="@+id/btn_clear_query"
+                hideIf="@{viewModel.query.length() != 0}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"
+                android:onClick="@{() -> viewModel.deleteQuery()}"
+                android:src="@drawable/ic_baseline_cancel_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/et_query"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tv_length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@{@string/length(viewModel.query.length())}"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_query" />
+
+            <View
+                android:id="@+id/view_bottom_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_length" />
+
+            <TextView
+                android:id="@+id/tv_translated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="160dp"
+                android:padding="16dp"
+                android:text="@{viewModel.translated.data}"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_bottom_divider" />
+
+            <ProgressBar
+                android:id="@+id/loading"
+                hideIf="@{viewModel.translated.status == Status.LOADING}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/tv_translated"
+                app:layout_constraintEnd_toEndOf="@id/tv_translated"
+                app:layout_constraintStart_toStartOf="@id/tv_translated"
+                app:layout_constraintTop_toTopOf="@id/tv_translated" />
+
+            <ImageButton
+                android:id="@+id/btn_copy_text"
+                hideIf="@{viewModel.translated.data.length() != 0}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:padding="8dp"
+                android:src="@drawable/ic_baseline_content_copy_24"
+                app:layout_constraintBottom_toBottomOf="@id/tv_translated"
+                app:layout_constraintEnd_toEndOf="@id/tv_translated"
+                tools:ignore="ContentDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
