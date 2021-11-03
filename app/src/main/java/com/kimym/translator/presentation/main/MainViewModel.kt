@@ -35,16 +35,14 @@ class MainViewModel @Inject constructor(
     private val _isSrcBottomSheet = MutableLiveData<Event<Boolean>>()
     val isSrcBottomSheet: LiveData<Event<Boolean>> = _isSrcBottomSheet
 
-    private val _translated = translatedAsLiveData()
-    val translated: LiveData<Resource<String>> = _translated
-
-    private val _countryList = Transformations.map(isSrcBottomSheet) {
-        getCountryList(it.peekContent())
-    }
-    val countryList: LiveData<MutableList<Country>> = _countryList
-
     private val _snackBar = MutableLiveData<Event<String>>()
     val snackBar: LiveData<Event<String>> = _snackBar
+
+    val translated = translatedAsLiveData()
+
+    val countryList = Transformations.map(isSrcBottomSheet) { value ->
+        getCountryList(value.peekContent())
+    }
 
     fun deleteQuery() {
         query.value = ""
@@ -72,7 +70,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun swapQuery() {
-        _translated.value?.data?.let { translated ->
+        translated.value?.data?.let { translated ->
             query.value = translated
         }
     }
@@ -102,10 +100,10 @@ class MainViewModel @Inject constructor(
                 job?.cancel()
                 when (query.isBlank()) {
                     true -> {
-                        _translated.value = Resource.Empty("")
+                        translated.value = Resource.Empty("")
                     }
                     false -> {
-                        _translated.value = Resource.Loading()
+                        translated.value = Resource.Loading()
                         job = translate()
                     }
                 }
@@ -113,7 +111,7 @@ class MainViewModel @Inject constructor(
             addSource(_targetLang) {
                 when (query.value.isNullOrBlank()) {
                     false -> {
-                        _translated.value = Resource.Loading()
+                        translated.value = Resource.Loading()
                         job = translate()
                     }
                 }
@@ -129,7 +127,7 @@ class MainViewModel @Inject constructor(
                 requireNotNull(_targetLang.value).code,
                 requireNotNull(query.value)
             )
-            _translated.postValue(Resource.Success(response))
+            translated.postValue(Resource.Success(response))
         }
     }
 }
