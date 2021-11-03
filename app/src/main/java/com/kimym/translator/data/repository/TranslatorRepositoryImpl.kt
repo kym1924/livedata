@@ -28,5 +28,6 @@ class TranslatorRepositoryImpl @Inject constructor(
         return ""
     }
 
-    override fun getCountryList(country: Country) = allCountryList.apply { remove(country) }
+    override fun getCountryList(country: Country): MutableList<Country> =
+        allCountryList.toMutableList().apply { remove(country) }
 }
