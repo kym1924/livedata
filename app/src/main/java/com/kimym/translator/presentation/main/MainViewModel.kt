@@ -60,8 +60,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun setSwap() {
-        swapLang()
         swapQuery()
+        swapLang()
     }
 
     private fun swapLang() {
