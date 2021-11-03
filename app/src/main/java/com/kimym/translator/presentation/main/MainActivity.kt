@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import com.kimym.translator.R
 import com.kimym.translator.databinding.ActivityMainBinding
 import com.kimym.translator.presentation.country.CountryBottomSheet
+import com.kimym.translator.util.EventObserver
 import com.kimym.translator.util.copy
 import com.kimym.translator.util.hideKeyboard
 import com.kimym.translator.util.rotationAnimation
@@ -29,28 +30,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setObserve() {
-        viewModel.isSrcBottomSheet.observe(this@MainActivity) {
-            it.getContentIfNotHandled()?.let {
-                hideKeyboard()
-                CountryBottomSheet().show(supportFragmentManager, CountryBottomSheet.TAG)
-            }
-        }
+        viewModel.isSrcBottomSheet.observe(this@MainActivity, EventObserver {
+            hideKeyboard()
+            CountryBottomSheet().show(supportFragmentManager, CountryBottomSheet.TAG)
+        })
 
-        viewModel.snackBar.observe(this@MainActivity) {
-            it.getContentIfNotHandled()?.let { msg ->
-                binding.root.showSnackBar(msg)
-            }
-        }
+        viewModel.snackBar.observe(this@MainActivity, EventObserver { msg ->
+            binding.root.showSnackBar(msg)
+        })
 
-        viewModel.swapLang.observe(this@MainActivity) {
-            it.getContentIfNotHandled()?.let { swap ->
-                when (swap) {
-                    true -> {
-                        binding.btnLanguageChange.rotationAnimation()
-                    }
+        viewModel.swapLang.observe(this@MainActivity, EventObserver { swap ->
+            when (swap) {
+                true -> {
+                    binding.btnLanguageChange.rotationAnimation()
                 }
             }
-        }
+        })
     }
 
     private fun setClickListener() {
