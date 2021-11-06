@@ -48,13 +48,13 @@
                 android:layout_marginTop="8dp"
                 android:background="@android:color/transparent"
                 android:clickable="@{viewModel.translated.status == Status.LOADING ? false : true}"
+                android:importantForAccessibility="no"
                 android:onClick="@{() -> viewModel.setSwap()}"
                 android:padding="8dp"
                 android:src="@drawable/ic_baseline_compare_arrows_48"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ContentDescription" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_target_lang"
@@ -102,14 +102,13 @@
                 hideIf="@{viewModel.query.length() != 0}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
+                android:importantForAccessibility="no"
                 android:onClick="@{() -> viewModel.deleteQuery()}"
+                android:padding="12dp"
                 android:src="@drawable/ic_baseline_cancel_24"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/et_query"
-                tools:ignore="ContentDescription" />
+                app:layout_constraintTop_toTopOf="@id/et_query" />
 
             <TextView
                 android:id="@+id/tv_length"
@@ -160,12 +159,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:padding="8dp"
+                android:importantForAccessibility="no"
+                android:padding="12dp"
                 android:src="@drawable/ic_baseline_content_copy_24"
                 app:layout_constraintBottom_toBottomOf="@id/tv_translated"
-                app:layout_constraintEnd_toEndOf="@id/tv_translated"
-                tools:ignore="ContentDescription" />
+                app:layout_constraintEnd_toEndOf="@id/tv_translated" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
 </layout>
