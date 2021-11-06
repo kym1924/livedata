@@ -59,12 +59,12 @@ class CountryBottomSheet : BottomSheetDialogFragment() {
         dismiss()
     }
 
-    companion object {
-        const val TAG = "BottomSheetDialog"
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val TAG = "BottomSheetDialog"
     }
 }
