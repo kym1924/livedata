@@ -9,16 +9,14 @@ import com.kimym.translator.BR
 import com.kimym.translator.data.entity.Country
 import com.kimym.translator.databinding.ItemCountryBinding
 
-class CountryAdapter(
-    private val itemClick: (country: Country) -> Unit,
-) : ListAdapter<Country, CountryAdapter.CountryViewHolder>(countryDiffUtil) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CountryViewHolder(
-        ItemCountryBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        ), itemClick
-    )
+class CountryAdapter(private val itemClick: (country: Country) -> Unit) :
+    ListAdapter<Country, CountryAdapter.CountryViewHolder>(countryDiffUtil) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemCountryBinding.inflate(inflater, parent, false)
+        return CountryViewHolder(binding, itemClick)
+    }
 
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
         holder.bind(getItem(position))

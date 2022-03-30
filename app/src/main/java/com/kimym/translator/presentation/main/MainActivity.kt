@@ -29,22 +29,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setObserve() {
-        viewModel.isSrcBottomSheet.observe(this@MainActivity, EventObserver {
-            hideKeyboard()
-            CountryBottomSheet().show(supportFragmentManager, CountryBottomSheet.TAG)
-        })
+        viewModel.isSrcBottomSheet.observe(
+            this@MainActivity,
+            EventObserver {
+                hideKeyboard()
+                CountryBottomSheet().show(supportFragmentManager, CountryBottomSheet.TAG)
+            }
+        )
 
-        viewModel.snackBar.observe(this@MainActivity, EventObserver { msg ->
-            binding.root.showSnackBar(msg)
-        })
+        viewModel.snackBar.observe(
+            this@MainActivity,
+            EventObserver { msg ->
+                binding.root.showSnackBar(msg)
+            }
+        )
 
-        viewModel.swapLang.observe(this@MainActivity, EventObserver { swap ->
-            when (swap) {
-                true -> {
+        viewModel.swapLang.observe(
+            this@MainActivity,
+            EventObserver { swap ->
+                if (swap) {
                     binding.btnLanguageChange.rotationAnimation()
                 }
             }
-        })
+        )
     }
 
     private fun setClickListener() {
